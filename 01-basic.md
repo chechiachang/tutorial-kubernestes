@@ -104,7 +104,7 @@ Kubernetes Node
 6. Pod is tied to a Node when created
 7. Many identical Pods runs on different Nodes in case of Node failure
 
-# Node
+### Node
 
 1. A worker machine managed by the Master
 2. Master automatically handles scheduling Pods across the Nodes in cluster
@@ -113,7 +113,7 @@ Kubernetes Node
 ..1. Kubelet, a process for communication between Master and the Nodes, managing Pods and Containers on a Node
 ..2. A container runtime(Docker, rkt...) responsible for pulling image, unpacking container, and running application
 
-# Overview
+### Overview
 
 User creates deployment in a cluster,
 deployment creates Pod in a Node,
@@ -134,6 +134,97 @@ with containers in the Pod
 ```
 kubectl get
 kubectl describe
-kubectl logs
-kubectl exec
+kubectl logs $POD_NAME
+kubectl exec -it $POD_NAME bash
+```
+
+# Expose app Publicly
+
+### Key words
+Pod Lifecycle
+Replication Controller
+Kubernetes Service
+Label Selector
+Service Spec
+Expose Type
+Selector
+
+### Pod Lifecycle
+1. Node dies, Pods lost
+2. Repilcation Contrller dynamically drive the cluster to disired state via creating new Pods
+3. Front-End system should not care about backend replicas amoung Pods, so there should be a way to reconciling changes amoung Pods
+
+### Service
+1. A Service is a Kubernetes abstraction
+..1. defines a logical set of Pods
+..2. a policy by which to access them
+2. Enable loose coupling between Pods
+3. Defined using YAML or JSON
+4. Label Selector determine a sets of Pods targeted by a Service
+5. Pods has unique IP address. Service export IPs outside the cluster in different types
+..1. ClusterIP: expose Service on an internal IP in the Cluster
+..2. NodePort: expose Service on the same port of selected Node using NAT. Service avaliable from outside cluster using : .
+..3. Load Balancer: Create an external load balancer in the current cloud and assign an external IP.
+..4. External Name: Expose service using external name by returning CNAME record. No proxy used. 
+
+### Expose
+
+```
+kubectl get pods
+kubectl get services
+kubectl expose deployment/kubernates-bootcamp --type="NodePort" --port 8080
+kubectl get services
+curl host:port
+
+kubectl delete service [$SERVICE_NAME][-l label=label]
+```
+
+# Scale
+
+Desired
+Current
+Up-To-Date
+Available
+
+### Scaling up
+1. New pods are created 
+2. Schedule to Nodes with available resources
+
+### Scaling down
+1. Reduces number of Pods
+
+### Service
+1. Service has an integrated load-balancer distributing network traffic to all Pods of an exposed deployment
+2. Service monitors running Pods using endpoints
+
+### Rolling updates
+1. Rolling updates without downtime
+
+```
+kubectl get deployments
+kubectl scale $DEPLOYMENT_NAME
+kubectl get pods -o wide
+```
+
+# Update
+
+Rolling Updates
+Continuous Integration
+Continuous Delivery
+
+### Rolling
+1. Allow deployments' update with zero downtime by incrementally update Pods instances
+2. New Pods will be scheduled on Nodes with available resources
+3. Multiple intances required
+4. Service will load-balance the traffic to available Pods (available to application users)
+5. Rolling updates allow:
+..1. Promote application from one environment to another
+..2. Rollback to previous version
+..3. Continuous Integration and Continuous Delivery with zero downtime
+
+```
+kubectl set image [deployment-name][image-name] 
+curl host:$NODE_PORT (32474)
+kubectl rollout status deployments/kubernetes-bootcamp
+kubectl rollout undo deployments/kubernetes-bootcamp
 ```

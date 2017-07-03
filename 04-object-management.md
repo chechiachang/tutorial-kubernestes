@@ -65,6 +65,6 @@ kubectl apply -R -f configs/
 ### Imperative Command
 
 Run: Create a new Deployment object to run Containers in one or more Pods
-Expose: 
-Autoscale
+Expose: Create a new Service object to load balance traffic across Pods
+Autoscale: Create a Autoscaler object to automatically scale a controller, such as a Deployment
 

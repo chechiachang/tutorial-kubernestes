@@ -7,7 +7,6 @@ Imperative commands
 Imperative object configuration
 Declarative object configuration
 
-
 ### Imperative Commands
 
 Command

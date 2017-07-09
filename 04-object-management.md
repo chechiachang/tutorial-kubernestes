@@ -1,6 +1,5 @@
 Object management
 ===
-
 ### Key Words
 
 Imperative commands

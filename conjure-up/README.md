@@ -24,17 +24,29 @@ check
 
 # Deploy 
 
-```
+
 sudo lxd init
 
-# use localhost lxc controller
+use localhost lxc controller
+
 juju bootstrap localhost lxd
 
-# disable controller ipv6
 lxc network set lxdbr0 ipv6.address none
 
 juju bootstrap localhost lxd
 
-conjure-up kubernetes
-```
 
+### Conjure up kubernetes on localhost
+
+conjure-up kubernetes
+
+or Headless mode
+
+conjure-up canonical-kubernetes localhost
+
+# Destroy
+
+conjure-down
+
+juju switch
+juju destroy-controller $controllername --destroy-all-models 

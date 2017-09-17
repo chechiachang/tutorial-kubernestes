@@ -17,19 +17,18 @@ check
 
 ### lxc
 
-sudo apt install lxc
+sudo apt install lxd && sudo lxd init
 
 check
  - lxc list
+ - sudo service lxd status
+NOTE: Use apt lxd and lxc ONLY. Don't use snap lxd.
 
 # Deploy 
 
-
-sudo lxd init
-
 use localhost lxc controller
 
-juju bootstrap localhost lxd
+sudo juju bootstrap localhost lxd
 
 lxc network set lxdbr0 ipv6.address none
 

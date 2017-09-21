@@ -39,7 +39,7 @@ apt-get update \
 
 ### Initializing your master
 
-kubeadm init --skip-preflight-checks
+kubeadm init --pod-network-cidr=10.244.0.0/16
 
 To start using your cluster, you need to run (as a regular user):
 
@@ -51,9 +51,45 @@ You should now deploy a pod network to the cluster.
 Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
   http://kubernetes.io/docs/admin/addons/
 
-You can now join any number of machines by running the following on each node
-as root:
+### Join your master
 
-  kubeadm join --token 93f3b1.7ad01b7510ce738b 192.168.0.195:6443
+On another machine with kebeadm, run as root:
 
+  kubeadm join --token token ip:port
+
+On the master machine, check:
+
+  kubectl get no
+  kubectl get cs
+
+### Install Pod Network
+
+Run:
+
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel-rbac.yml
+
+Check:
+
+kubectl get pods --all-namespaces
+
+### Install a test application
+
+Check:
+
+kubectl get namespace
+
+Run:
+
+kubectl create namespace my-test
+
+kubectl -n my-test get svc front-end
+
+### Trouble shooting
+
+hostnamectl --set-hostname server1
+hostnamectl --set-hostname server2
+
+kubeadm init
+kubenetes certification is signed to hostname
 
